@@ -32,6 +32,7 @@ def write_post(title, text):
 
 def read_posts():
     posts = Post.query.all()
+    posts.reverse()
     return posts
 
 
