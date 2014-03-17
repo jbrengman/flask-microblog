@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block body %}
+    <form action="/post/new" method="post">
+        New microblog title:<br>
+        <input type="text" name="title" size=80>
+        <br><br>
+        New microblog content:<br>
+        <textarea name="body" rows=10 cols=80>
+        </textarea>
+        <br>
+        Categories:
+        <br>
+        <input type="text" name="categories" size=80>
+        <br>
+        <input type="submit" value="Create">
+    </form>
+{% endblock %}
