@@ -1,0 +1,5 @@
+[program:%(app_name)s]
+command=python %(app_file)s
+directory=/home/ubuntu
+stdout_logfile=/home/ubuntu/%(app_name)s_supervisor_log.txt
+redirect_stderr=true
