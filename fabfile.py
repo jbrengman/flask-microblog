@@ -205,27 +205,43 @@ def _start_supervisor(app_name):
 
 
 def install_python():
-    run_command_on_selected_server(_install_python())
+    run_command_on_selected_server(_install_python)
 
 
 def _install_python():
-    sudo('apt-get install python-all-dev python-setuptools python-pip libpq-dev')
+    sudo('apt-get -y install python-all-dev python-setuptools python-pip libpq-dev')
 
 
 def install_postgres():
-    run_command_on_selected_server(_install_postgres())
+    run_command_on_selected_server(_install_postgres)
 
 
 def _install_postgres():
-    sudo('apt-get install postgresql postgresql-contrib')
+    sudo('apt-get -y install postgresql postgresql-contrib')
 
 
-def install_reqs():
-    run_command_on_selected_server(_install_reqs())
+def install_reqs(app_name):
+    run_command_on_selected_server(_install_reqs, app_name=app_name)
 
 
-def _install_reqs():
-    sudo('pip install -r requirements.txt')
+def _install_reqs(app_name):
+    sudo('pip install -r ' + app_name + '/requirements.txt')
+
+
+def copy_project():
+    run_command_on_selected_server(_copy_project)
+
+
+def _copy_project():
+    rsync_project('~')
+
+
+def update():
+    run_command_on_selected_server(_update)
+
+
+def _update():
+    sudo('apt-get update')
 
 
 def setup(app_name, app_file):
@@ -233,16 +249,18 @@ def setup(app_name, app_file):
     # run(
     #     'scp -i ~/.ssh/pk-aws.pem ' + os.getcwd() + '/' + app_file +
     #     ' ubuntu@' + env.active_instance.public_dns_name + ':/home/ubuntu')
-    rsync_project('~')
+    copy_project()
+    update()
     install_python()
     install_postgres()
-    install_reqs()
+    install_reqs(app_name)
     install_sup(app_name, app_file)
     install_nginx()
     start_supervisor(app_name)
 
 
 def deploy():
-    select_instance
-    rsync_project('~')
+    select_instance()
+    copy_project()
+    update()
     install_reqs()

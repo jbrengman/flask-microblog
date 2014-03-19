@@ -1,0 +1,1 @@
+<a href="{{url_for("index")}}">Home</a>  {% if session.get('logged_in')!=True %}<a href="{{ url_for('login_view') }}">Login</a>  <a href="{{ url_for('register_view') }}">Register</a>{% else %}<a href="{{ url_for('new_view') }}">New blog post</a>  <a href="{{ url_for('logout_view') }}">Logout</a>{% endif %}
